@@ -14,7 +14,8 @@ public class User {
         super();
     }
 
-    public User(String id, String username, String email, String password, String givenName, String surname, Boolean isActive, String roleID) {
+    public User(String id, String username, String email, String password, String givenName, String surname, Boolean
+            isActive, String roleID) {
         this.id = id;
         this.username = username;
         this.email = email;
