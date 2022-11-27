@@ -1,6 +1,7 @@
 package com.revature.ers.daos;
 
 import com.revature.ers.models.User;
+import com.revature.ers.models.UserRole;
 import com.revature.ers.utils.ConnectionFactory;
 
 import java.sql.Connection;
@@ -45,7 +46,7 @@ public class UserDAO implements CrudDAO<User> {
                 User currentUser = new User(rs.getString("user_id"), rs.getString("username"),
                         rs.getString("email"), rs.getString("password"),
                         rs.getString("given_name"), rs.getString("surname"),
-                        rs.getBoolean("is_active"), rs.getString("role_id"));
+                        rs.getBoolean("is_active"), UserRole.valueOf(rs.getString("role_id")));
                 users.add(currentUser);
             }
         } catch (SQLException e) {

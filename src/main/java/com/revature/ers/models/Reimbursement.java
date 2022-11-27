@@ -12,14 +12,15 @@ public class Reimbursement {
     private String paymentID;
     private String authorID;
     private String resolverID;
-    private String statusID;
-    private String typeID;
+    private ReimbStatus status;
+    private ReimbType type;
 
     public Reimbursement() {
         super();
     }
 
-    public Reimbursement(String id, double amount, Date submitted, Date resolved, String description, String receipt, String paymentID, String authorID, String resolverID, String statusID, String typeID) {
+    public Reimbursement(String id, double amount, Date submitted, Date resolved, String description, String receipt,
+                         String paymentID, String authorID, String resolverID, ReimbStatus status, ReimbType type) {
         this.id = id;
         this.amount = amount;
         this.submitted = submitted;
@@ -29,8 +30,8 @@ public class Reimbursement {
         this.paymentID = paymentID;
         this.authorID = authorID;
         this.resolverID = resolverID;
-        this.statusID = statusID;
-        this.typeID = typeID;
+        this.status = status;
+        this.type = type;
     }
 
     public String getId() {
@@ -105,20 +106,20 @@ public class Reimbursement {
         this.resolverID = resolverID;
     }
 
-    public String getStatusID() {
-        return statusID;
+    public ReimbStatus getStatus() {
+        return status;
     }
 
-    public void setStatusID(String statusID) {
-        this.statusID = statusID;
+    public void setStatus(ReimbStatus status) {
+        this.status = status;
     }
 
-    public String getTypeID() {
-        return typeID;
+    public ReimbType getType() {
+        return type;
     }
 
-    public void setTypeID(String typeID) {
-        this.typeID = typeID;
+    public void setType(ReimbType type) {
+        this.type = type;
     }
 
     @Override
@@ -133,8 +134,8 @@ public class Reimbursement {
                 ", paymentID='" + paymentID + '\'' +
                 ", authorID='" + authorID + '\'' +
                 ", resolverID='" + resolverID + '\'' +
-                ", statusID='" + statusID + '\'' +
-                ", typeID='" + typeID + '\'' +
+                ", status=" + status +
+                ", type=" + type +
                 '}';
     }
 }

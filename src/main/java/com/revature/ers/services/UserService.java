@@ -3,6 +3,7 @@ package com.revature.ers.services;
 import com.revature.ers.daos.UserDAO;
 import com.revature.ers.dtos.requests.NewUserRequest;
 import com.revature.ers.models.User;
+import com.revature.ers.models.UserRole;
 import com.revature.ers.utils.custom_exceptions.InvalidUserException;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class UserService {
         if(!req.getPassword1().equals(req.getPassword2()))
             throw new InvalidUserException("Passwords do not match");
 
-        User createdUser = new User(UUID.randomUUID().toString(), req.getUsername(), "email@email.com", req.getPassword1(), "John", "Smith", true, "DEFAULT");
+        User createdUser = new User(UUID.randomUUID().toString(), req.getUsername(), "email@email.com", req.getPassword1(), "John", "Smith", true, UserRole.EMPLOYEE);
         userDAO.save(createdUser);
     }
 
