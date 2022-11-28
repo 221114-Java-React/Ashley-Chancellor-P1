@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ers.dtos.requests.NewLoginRequest;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
+import com.revature.ers.services.TokenService;
 import com.revature.ers.services.UserService;
 import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
 import io.javalin.http.Context;
@@ -16,12 +17,13 @@ import java.io.IOException;
 public class AuthHandler {
     // dependency injections
     private final UserService userService;
-    //private final TokenService tokenService;
+    private final TokenService tokenService;
     private final ObjectMapper mapper;
     private static final Logger logger = LoggerFactory.getLogger(User.class);
 
-    public AuthHandler(UserService userService, ObjectMapper mapper) {
+    public AuthHandler(UserService userService, TokenService tokenService, ObjectMapper mapper) {
         this.userService = userService;
+        this.tokenService = tokenService;
         this.mapper = mapper;
     }
 
@@ -33,13 +35,17 @@ public class AuthHandler {
             Principal principal = userService.login(req);
 
             // generate token from Principal obj
-            //String token = tokenService.generateToken(principal);
+            String token = tokenService.generateToken(principal);
 
             // set header with auth token
-            //ctx.res.setHeader("authorization", token);
+            ctx.res.setHeader("authorization", token);
 
-            //return principal obj as json
+            // return principal obj as json
             ctx.json(principal);
+
+            ctx.status(202); // ACCEPTED
+
+            logger.info("Login successful");
         } catch(InvalidAuthException e){
             ctx.status(401);
             ctx.json(e);

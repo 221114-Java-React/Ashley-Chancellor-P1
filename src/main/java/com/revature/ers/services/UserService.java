@@ -21,7 +21,7 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public void saveUser(NewUserRequest req) {
+    public void signup(NewUserRequest req) {
         List<String> usernames = userDAO.findAllUsernames();
 
         if(!isValidUserName(req.getUsername()))
@@ -61,6 +61,10 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userDAO.findAll();
+    }
+
+    public List<User> getAllUsersByUsername(String username) {
+        return userDAO.findAllByUsername(username);
     }
 
     // helper functions
