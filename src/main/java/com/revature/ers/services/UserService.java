@@ -1,9 +1,12 @@
 package com.revature.ers.services;
 
 import com.revature.ers.daos.UserDAO;
+import com.revature.ers.dtos.requests.NewLoginRequest;
 import com.revature.ers.dtos.requests.NewUserRequest;
+import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
 import com.revature.ers.models.UserRole;
+import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
 import com.revature.ers.utils.custom_exceptions.InvalidUserException;
 
 import java.util.List;
@@ -47,6 +50,19 @@ public class UserService {
         userDAO.save(createdUser);
     }
 
+    public Principal login(NewLoginRequest req) {
+        User validUser = userDAO.findByUsernameAndPassword(req.getUsername(), req.getPassword());
+
+        if(validUser == null)
+            throw new InvalidAuthException("Invalid username or password");
+
+        return new Principal(validUser.getId(), validUser.getUsername(), validUser.getRole());
+    }
+
+    public List<User> getAllUsers() {
+        return userDAO.findAll();
+    }
+
     // helper functions
     private boolean isValidUserName(String username) {
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
@@ -61,7 +77,7 @@ public class UserService {
     }
 
     private boolean isValidPassword(String password) {
-        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\\\S+$).{8, 20}$");
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\\\S+$).{8,20}$");
 
         /* A password is considered valid if all the following constraints are satisfied:
              * It contains at least 8 characters and at most 20 characters.

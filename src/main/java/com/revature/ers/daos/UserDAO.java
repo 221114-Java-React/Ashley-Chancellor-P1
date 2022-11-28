@@ -16,7 +16,21 @@ public class UserDAO implements CrudDAO<User> {
 
     @Override
     public void save(User obj) {
-
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO ers_users (user_id, username, email, " +
+                    "password, given_name, surname, is_active, user_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?::ers_user_roles)");
+            ps.setString(1, obj.getId());
+            ps.setString(2, obj.getUsername());
+            ps.setString(3, obj.getEmail());
+            ps.setString(4, obj.getPassword());
+            ps.setString(5, obj.getGivenName());
+            ps.setString(6, obj.getSurname());
+            ps.setString(7, String.valueOf(obj.getActive()));
+            ps.setString(8, String.valueOf(obj.getRole()));
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -73,5 +87,27 @@ public class UserDAO implements CrudDAO<User> {
         }
 
         return usernames;
+    }
+
+    public User findByUsernameAndPassword(String username, String password) {
+        User user = null;
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ers_users WHERE username = ? AND password = ?");
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) {
+                user = new User(rs.getString("user_id"), rs.getString("username"),
+                        rs.getString("email"), rs.getString("password"),
+                        rs.getString("given_name"), rs.getString("surname"),
+                        rs.getBoolean("is_active"), UserRole.valueOf(rs.getString("role_id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 }
