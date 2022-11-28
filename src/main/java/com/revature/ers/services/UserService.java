@@ -48,14 +48,6 @@ public class UserService {
     // helper functions
     public boolean isValidUserName(String username) {
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
-
-        /* A username is considered valid if all the following constraints are satisfied:
-             * It contains at least 8 characters and at most 20 characters.
-             * It doesn't contain a '_' or '.' at the beginning.
-             * It doesn't contain a "__" or "_." or "._" or "..".
-             * It contains only alphanumeric characters or '.' or '_'.
-             * It doesn't contain '_' or '.' at the end.
-         */
     }
 
     public boolean isDuplicateUsername(String username) {
@@ -64,16 +56,7 @@ public class UserService {
     }
 
     public boolean isValidPassword(String password) {
-        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\\\S+$).{8,20}$");
-
-        /* A password is considered valid if all the following constraints are satisfied:
-             * It contains at least 8 characters and at most 20 characters.
-             * It contains at least one digit.
-             * It contains at least one upper case alphabet.
-             * It contains at least one lower case alphabet.
-             * It contains at least one special character which includes !@#$%&*()-+=^.
-             * It doesn't contain any white space.
-         */
+        return password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
     }
 
     public boolean isSamePassword(String password1, String password2) {

@@ -47,21 +47,12 @@ public class UserHandler {
                         else
                             throw new InvalidUserException("Passwords do not match");
                     } else
-                        throw new InvalidUserException("Password" +
-                                "/n/t * must be at least 8 and no more than 20 characters long" +
-                                "/n/t * must contain at least 1 number" +
-                                "/n/t * must contain at least 1 uppercase letter" +
-                                "/n/t * must contain at least 1 lowercase letter" +
-                                "/n/t * must contain at least one special character (!@#$%&*()-+=^)" +
-                                "/n/t * may not contain any white space");
+                        throw new InvalidUserException("Password must be at least 8 characters long, and contain at " +
+                                "least one number");
                 } else
                     throw new InvalidUserException("Username is already taken");
             } else
-                throw new InvalidUserException("Username" +
-                        "/n/t * must be at least 8 and no more than 20 characters long" +
-                        "/n/t * must contain only alphanumeric characters or . or _" +
-                        "/n/t * may not contain _ or . at the beginning or end" +
-                        "/n/t * may not contain __ or _. or ._ or ..");
+                throw new InvalidUserException("Username must be 8-20 characters long");
 
             ctx.status(201); // CREATED
             ctx.json(createdUser.getId());
