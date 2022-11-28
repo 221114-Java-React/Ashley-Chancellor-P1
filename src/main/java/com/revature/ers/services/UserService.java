@@ -7,7 +7,6 @@ import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
 import com.revature.ers.models.UserRole;
 import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
-import com.revature.ers.utils.custom_exceptions.InvalidUserException;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,33 +20,12 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public void signup(NewUserRequest req) {
-        List<String> usernames = userDAO.findAllUsernames();
+    public User signup(NewUserRequest req) {
+        User createdUser = new User(UUID.randomUUID().toString(), req.getUsername(), "email@email.com",
+            req.getPassword1(), "John", "Smith", true, UserRole.EMPLOYEE);
 
-        if(!isValidUserName(req.getUsername()))
-            throw new InvalidUserException("Username" +
-                    "/n/t * must be at least 8 and no more than 20 characters long" +
-                    "/n/t * must contain only alphanumeric characters or . or _" +
-                    "/n/t * may not contain _ or . at the beginning or end" +
-                    "/n/t * may not contain __ or _. or ._ or ..");
-
-        if(usernames.contains(req.getUsername()))
-            throw new InvalidUserException("Username is already taken");
-
-        if(!isValidPassword(req.getPassword1()))
-            throw new InvalidUserException("Password" +
-                    "/n/t * must be at least 8 and no more than 20 characters long" +
-                    "/n/t * must contain at least 1 number" +
-                    "/n/t * must contain at least 1 uppercase letter" +
-                    "/n/t * must contain at least 1 lowercase letter" +
-                    "/n/t * must contain at least one special character (!@#$%&*()-+=^)" +
-                    "/n/t * may not contain any white space");
-
-        if(!req.getPassword1().equals(req.getPassword2()))
-            throw new InvalidUserException("Passwords do not match");
-
-        User createdUser = new User(UUID.randomUUID().toString(), req.getUsername(), "email@email.com", req.getPassword1(), "John", "Smith", true, UserRole.EMPLOYEE);
         userDAO.save(createdUser);
+        return createdUser;
     }
 
     public Principal login(NewLoginRequest req) {
@@ -68,7 +46,7 @@ public class UserService {
     }
 
     // helper functions
-    private boolean isValidUserName(String username) {
+    public boolean isValidUserName(String username) {
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
 
         /* A username is considered valid if all the following constraints are satisfied:
@@ -80,7 +58,12 @@ public class UserService {
          */
     }
 
-    private boolean isValidPassword(String password) {
+    public boolean isDuplicateUsername(String username) {
+        List<String> usernames = userDAO.findAllUsernames();
+        return usernames.contains(username);
+    }
+
+    public boolean isValidPassword(String password) {
         return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\\\S+$).{8,20}$");
 
         /* A password is considered valid if all the following constraints are satisfied:
@@ -91,5 +74,9 @@ public class UserService {
              * It contains at least one special character which includes !@#$%&*()-+=^.
              * It doesn't contain any white space.
          */
+    }
+
+    public boolean isSamePassword(String password1, String password2) {
+        return password1.equals(password2);
     }
 }
