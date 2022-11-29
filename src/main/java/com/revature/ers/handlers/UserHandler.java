@@ -40,15 +40,24 @@ public class UserHandler {
             User createdUser;
 
             if(userService.isValidUserName(req.getUsername())) {
-                if (!userService.isDuplicateUsername(req.getUsername())) {
-                    if (userService.isValidPassword(req.getPassword1())) {
-                        if (userService.isSamePassword(req.getPassword1(), req.getPassword2()))
-                            createdUser = userService.signup(req);
-                        else
-                            throw new InvalidUserException("Passwords do not match");
+                if(!userService.isDuplicateUsername(req.getUsername())) {
+                    if(userService.isValidEmail(req.getEmail())) {
+                        if (!userService.isDuplicateEmail(req.getEmail())) {
+                            if (userService.isValidPassword(req.getPassword1())) {
+                                if (userService.isSamePassword(req.getPassword1(), req.getPassword2())) {
+                                    if (userService.isValidName(req.getGivenName(), req.getSurname()))
+                                        createdUser = userService.signup(req);
+                                    else
+                                        throw new InvalidUserException("Please enter a given name and surname");
+                                } else
+                                    throw new InvalidUserException("Passwords do not match");
+                            } else
+                                throw new InvalidUserException("Password must be at least 8 characters long, and " +
+                                        "contain at least one number");
+                        } else
+                            throw new InvalidUserException("Email address is already taken by another user");
                     } else
-                        throw new InvalidUserException("Password must be at least 8 characters long, and contain at " +
-                                "least one number");
+                        throw new InvalidUserException("Please enter a valid email address");
                 } else
                     throw new InvalidUserException("Username is already taken");
             } else

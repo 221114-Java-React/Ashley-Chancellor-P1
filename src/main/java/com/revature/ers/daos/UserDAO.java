@@ -89,6 +89,24 @@ public class UserDAO implements CrudDAO<User> {
         return usernames;
     }
 
+    public List<String> findAllEmails() {
+        List<String> emails = new ArrayList<>();
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT (email) FROM ers_users");
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                String currentUsername = rs.getString("email");
+                emails.add(currentUsername);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return emails;
+    }
+
     public User findByUsernameAndPassword(String username, String password) {
         User user = null;
 
@@ -102,7 +120,7 @@ public class UserDAO implements CrudDAO<User> {
                 user = new User(rs.getString("user_id"), rs.getString("username"),
                         rs.getString("email"), rs.getString("password"),
                         rs.getString("given_name"), rs.getString("surname"),
-                        rs.getBoolean("is_active"), UserRole.valueOf(rs.getString("role_id")));
+                        rs.getBoolean("is_active"), UserRole.valueOf(rs.getString("user_role")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

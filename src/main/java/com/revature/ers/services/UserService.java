@@ -21,8 +21,8 @@ public class UserService {
     }
 
     public User signup(NewUserRequest req) {
-        User createdUser = new User(UUID.randomUUID().toString(), req.getUsername(), "email@email.com",
-            req.getPassword1(), "John", "Smith", true, UserRole.EMPLOYEE);
+        User createdUser = new User(UUID.randomUUID().toString(), req.getUsername(), req.getEmail(),
+            req.getPassword1(), req.getGivenName(), req.getSurname(), true, UserRole.EMPLOYEE);
 
         userDAO.save(createdUser);
         return createdUser;
@@ -55,11 +55,24 @@ public class UserService {
         return usernames.contains(username);
     }
 
+    public boolean isValidEmail(String email) {
+        return email.matches("^[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*$");
+    }
+
+    public boolean isDuplicateEmail(String email) {
+        List<String> usernames = userDAO.findAllEmails();
+        return usernames.contains(email);
+    }
+
     public boolean isValidPassword(String password) {
         return password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
     }
 
     public boolean isSamePassword(String password1, String password2) {
         return password1.equals(password2);
+    }
+
+    public boolean isValidName(String givenName, String surname) {
+        return !givenName.isEmpty() && !surname.isEmpty();
     }
 }
