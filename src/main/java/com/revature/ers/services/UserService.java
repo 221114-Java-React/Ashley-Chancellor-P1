@@ -46,7 +46,7 @@ public class UserService {
     }
 
     // helper functions
-    public boolean isValidUserName(String username) {
+    public boolean isValidUsername(String username) {
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
     }
 
@@ -60,8 +60,8 @@ public class UserService {
     }
 
     public boolean isDuplicateEmail(String email) {
-        List<String> usernames = userDAO.findAllEmails();
-        return usernames.contains(email);
+        List<String> emails = userDAO.findAllEmails();
+        return emails.contains(email);
     }
 
     public boolean isValidPassword(String password) {

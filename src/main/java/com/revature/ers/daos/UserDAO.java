@@ -97,8 +97,8 @@ public class UserDAO implements CrudDAO<User> {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                String currentUsername = rs.getString("email");
-                emails.add(currentUsername);
+                String currentEmail = rs.getString("email");
+                emails.add(currentEmail);
             }
         } catch (SQLException e) {
             e.printStackTrace();

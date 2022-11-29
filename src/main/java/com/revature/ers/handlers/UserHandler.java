@@ -39,7 +39,7 @@ public class UserHandler {
 
             User createdUser;
 
-            if(userService.isValidUserName(req.getUsername())) {
+            if(userService.isValidUsername(req.getUsername())) {
                 if(!userService.isDuplicateUsername(req.getUsername())) {
                     if(userService.isValidEmail(req.getEmail())) {
                         if (!userService.isDuplicateEmail(req.getEmail())) {
