@@ -1,9 +1,13 @@
 package com.revature.ers.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.ers.daos.ReimbursementDAO;
 import com.revature.ers.daos.UserDAO;
 import com.revature.ers.handlers.AuthHandler;
+import com.revature.ers.handlers.ReimbursementHandler;
 import com.revature.ers.handlers.UserHandler;
+import com.revature.ers.models.Reimbursement;
+import com.revature.ers.services.ReimbursementService;
 import com.revature.ers.services.TokenService;
 import com.revature.ers.services.UserService;
 import io.javalin.Javalin;
@@ -20,6 +24,11 @@ public class Router {
         UserDAO userDAO = new UserDAO();
         UserService userService = new UserService(userDAO);
         UserHandler userHandler = new UserHandler(userService, tokenService, mapper);
+
+        // Reimbursement
+        ReimbursementDAO reimbursementDAO = new ReimbursementDAO();
+        ReimbursementService reimbursementService = new ReimbursementService(reimbursementDAO);
+        //ReimbursementHandler reimbursementHandler = new ReimbursementHandler(reimbursementService);
 
         // Auth
         AuthHandler authHandler = new AuthHandler(userService, tokenService, mapper);

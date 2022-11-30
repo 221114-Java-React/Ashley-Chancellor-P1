@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// purpose: return data from db
+// purpose: return user data from db
 public class UserDAO implements CrudDAO<User> {
 
     @Override

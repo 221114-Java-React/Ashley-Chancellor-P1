@@ -5,7 +5,6 @@ import com.revature.ers.dtos.requests.NewLoginRequest;
 import com.revature.ers.dtos.requests.NewUserRequest;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
-import com.revature.ers.models.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -18,11 +17,11 @@ import static org.junit.Assert.*;
 
 public class UserServiceTest {
     private UserService sut;
-    private final UserDAO mockUserDao = Mockito.mock(UserDAO.class);
+    private final UserDAO mockUserDAO = Mockito.mock(UserDAO.class);
 
     @Before
     public void init() {
-        sut = new UserService(mockUserDao);
+        sut = new UserService(mockUserDAO);
     }
 
     @Test
@@ -56,7 +55,7 @@ public class UserServiceTest {
         String uniqueUsername = "ScruffyC";
         List<String> stubbedUsernames = Arrays.asList("tester001", "tester002", "tester003");
 
-        Mockito.when(mockUserDao.findAllUsernames()).thenReturn(stubbedUsernames);
+        Mockito.when(mockUserDAO.findAllUsernames()).thenReturn(stubbedUsernames);
 
         // Act
         boolean condition = spySut.isDuplicateUsername(uniqueUsername);
@@ -72,7 +71,7 @@ public class UserServiceTest {
         String duplicateUsername = "tester002";
         List<String> stubbedUsernames = Arrays.asList("tester001", "tester002", "tester003");
 
-        Mockito.when(mockUserDao.findAllUsernames()).thenReturn(stubbedUsernames);
+        Mockito.when(mockUserDAO.findAllUsernames()).thenReturn(stubbedUsernames);
 
         // Act
         boolean condition = spySut.isDuplicateUsername(duplicateUsername);
@@ -112,7 +111,7 @@ public class UserServiceTest {
         String uniqueEmail = "scruffy.chancellor@icloud.com";
         List<String> stubbedEmails = Arrays.asList("tester1@test.com", "tester2@test.com", "tester3@test.com");
 
-        Mockito.when(mockUserDao.findAllEmails()).thenReturn(stubbedEmails);
+        Mockito.when(mockUserDAO.findAllEmails()).thenReturn(stubbedEmails);
 
         // Act
         boolean condition = spySut.isDuplicateEmail(uniqueEmail);
@@ -128,7 +127,7 @@ public class UserServiceTest {
         String duplicateEmail = "tester3@test.com";
         List<String> stubbedEmails = Arrays.asList("tester1@test.com", "tester2@test.com", "tester3@test.com");
 
-        Mockito.when(mockUserDao.findAllEmails()).thenReturn(stubbedEmails);
+        Mockito.when(mockUserDAO.findAllEmails()).thenReturn(stubbedEmails);
 
         // Act
         boolean condition = spySut.isDuplicateEmail(duplicateEmail);
@@ -235,8 +234,8 @@ public class UserServiceTest {
         assertNotNull(createdUser.getUsername());
         assertNotNull(createdUser.getPassword());
         assertNotEquals("", createdUser.getUsername());
-        assertEquals("", createdUser.getRoleId());
-        Mockito.verify(mockUserDao, Mockito.times(1)).save(createdUser);
+        assertEquals("05836bdd-83c4-4ecb-a255-c7f1f7e0bd40", createdUser.getRoleId());
+        Mockito.verify(mockUserDAO, Mockito.times(1)).save(createdUser);
     }
 
     @Test
@@ -249,7 +248,7 @@ public class UserServiceTest {
                 validPassword, "John", "Smith", true, "");
         NewLoginRequest stubbedReq = new NewLoginRequest(validUsername, validPassword);
 
-        Mockito.when(mockUserDao.findByUsernameAndPassword(validUsername, validPassword)).thenReturn(stubbedUser);
+        Mockito.when(mockUserDAO.findByUsernameAndPassword(validUsername, validPassword)).thenReturn(stubbedUser);
 
         // Act
         Principal principal = spySut.login(stubbedReq);
@@ -259,7 +258,7 @@ public class UserServiceTest {
         assertNotNull(principal.getUserId());
         assertNotNull(principal.getUsername());
         assertNotEquals("", principal.getUsername());
-        Mockito.verify(mockUserDao, Mockito.times(1)).findByUsernameAndPassword(
+        Mockito.verify(mockUserDAO, Mockito.times(1)).findByUsernameAndPassword(
                 stubbedReq.getUsername(), stubbedReq.getPassword());;
     }
 }

@@ -9,9 +9,9 @@ public class Reimbursement {
     private Date resolved;
     private String description;
     private String receipt;
-    private String paymentID;
-    private String authorID;
-    private String resolverID;
+    private String paymentId;
+    private String authorId;
+    private String resolverId;
     private String statusId;
     private String typeId;
 
@@ -20,16 +20,16 @@ public class Reimbursement {
     }
 
     public Reimbursement(String id, double amount, Date submitted, Date resolved, String description, String receipt,
-                         String paymentID, String authorID, String resolverID, String statusId, String typeId) {
+                         String paymentId, String authorId, String resolverId, String statusId, String typeId) {
         this.id = id;
         this.amount = amount;
         this.submitted = submitted;
         this.resolved = resolved;
         this.description = description;
         this.receipt = receipt;
-        this.paymentID = paymentID;
-        this.authorID = authorID;
-        this.resolverID = resolverID;
+        this.paymentId = paymentId;
+        this.authorId = authorId;
+        this.resolverId = resolverId;
         this.statusId = statusId;
         this.typeId = typeId;
     }
@@ -82,28 +82,28 @@ public class Reimbursement {
         this.receipt = receipt;
     }
 
-    public String getPaymentID() {
-        return paymentID;
+    public String getPaymentId() {
+        return paymentId;
     }
 
-    public void setPaymentID(String paymentID) {
-        this.paymentID = paymentID;
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
-    public String getAuthorID() {
-        return authorID;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthorID(String authorID) {
-        this.authorID = authorID;
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 
-    public String getResolverID() {
-        return resolverID;
+    public String getResolverId() {
+        return resolverId;
     }
 
-    public void setResolverID(String resolverID) {
-        this.resolverID = resolverID;
+    public void setResolverId(String resolverId) {
+        this.resolverId = resolverId;
     }
 
     public String getStatusId() {
@@ -131,9 +131,9 @@ public class Reimbursement {
                 ", resolved=" + resolved +
                 ", description='" + description + '\'' +
                 ", receipt='" + receipt + '\'' +
-                ", paymentID='" + paymentID + '\'' +
-                ", authorID='" + authorID + '\'' +
-                ", resolverID='" + resolverID + '\'' +
+                ", paymentID='" + paymentId + '\'' +
+                ", authorID='" + authorId + '\'' +
+                ", resolverID='" + resolverId + '\'' +
                 ", statusId='" + statusId + '\'' +
                 ", typeId='" + typeId + '\'' +
                 '}';
