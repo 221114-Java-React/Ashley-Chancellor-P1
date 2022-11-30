@@ -22,7 +22,8 @@ public class UserService {
 
     public User signup(NewUserRequest req) {
         User createdUser = new User(UUID.randomUUID().toString(), req.getUsername(), req.getEmail(),
-            req.getPassword1(), req.getGivenName(), req.getSurname(), true, UserRole.EMPLOYEE);
+            req.getPassword1(), req.getGivenName(), req.getSurname(), true,
+                "05836bdd-83c4-4ecb-a255-c7f1f7e0bd40");
 
         userDAO.save(createdUser);
         return createdUser;
@@ -34,7 +35,8 @@ public class UserService {
         if(validUser == null)
             throw new InvalidAuthException("Invalid username or password");
 
-        return new Principal(validUser.getId(), validUser.getUsername(), validUser.getRole());
+        return new Principal(validUser.getId(), validUser.getUsername(), validUser.getEmail(),
+                validUser.getGivenName(), validUser.getSurname(), validUser.isActive(), validUser.getRoleId());
     }
 
     public List<User> getAllUsers() {

@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static com.revature.ers.models.UserRole.EMPLOYEE;
 import static org.junit.Assert.*;
 
 public class UserServiceTest {
@@ -236,7 +235,7 @@ public class UserServiceTest {
         assertNotNull(createdUser.getUsername());
         assertNotNull(createdUser.getPassword());
         assertNotEquals("", createdUser.getUsername());
-        assertEquals(EMPLOYEE, createdUser.getRole());
+        assertEquals("", createdUser.getRoleId());
         Mockito.verify(mockUserDao, Mockito.times(1)).save(createdUser);
     }
 
@@ -247,7 +246,7 @@ public class UserServiceTest {
         String validUsername = "tester001";
         String validPassword = "passw0rd";
         User stubbedUser = new User(UUID.randomUUID().toString(), validUsername, "tester1@test.com",
-                validPassword, "John", "Smith", true, EMPLOYEE);
+                validPassword, "John", "Smith", true, "");
         NewLoginRequest stubbedReq = new NewLoginRequest(validUsername, validPassword);
 
         Mockito.when(mockUserDao.findByUsernameAndPassword(validUsername, validPassword)).thenReturn(stubbedUser);

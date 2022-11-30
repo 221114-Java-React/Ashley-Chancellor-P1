@@ -7,15 +7,15 @@ public class User {
     private String password;
     private String givenName;
     private String surname;
-    private Boolean isActive;
-    private UserRole role;
+    private boolean isActive;
+    private String roleId;
 
     public User() {
         super();
     }
 
     public User(String id, String username, String email, String password, String givenName, String surname, Boolean
-            isActive, UserRole role) {
+            isActive, String roleId) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -23,7 +23,7 @@ public class User {
         this.givenName = givenName;
         this.surname = surname;
         this.isActive = isActive;
-        this.role = role;
+        this.roleId = roleId;
     }
 
     public String getId() {
@@ -74,20 +74,20 @@ public class User {
         this.surname = surname;
     }
 
-    public Boolean getActive() {
+    public boolean isActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         isActive = active;
     }
 
-    public UserRole getRole() {
-        return role;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class User {
                 ", givenName='" + givenName + '\'' +
                 ", surname='" + surname + '\'' +
                 ", isActive=" + isActive +
-                ", role=" + role +
+                ", roleId='" + roleId + '\'' +
                 '}';
     }
 }

@@ -1,7 +1,6 @@
 package com.revature.ers.daos;
 
 import com.revature.ers.models.User;
-import com.revature.ers.models.UserRole;
 import com.revature.ers.utils.ConnectionFactory;
 
 import java.sql.Connection;
@@ -18,15 +17,15 @@ public class UserDAO implements CrudDAO<User> {
     public void save(User obj) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO ers_users (user_id, username, email, " +
-                    "password, given_name, surname, is_active, user_role) VALUES (?, ?, ?, ?, ?, ?, ?, ?::ers_user_roles)");
+                    "password, given_name, surname, is_active, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, obj.getId());
             ps.setString(2, obj.getUsername());
             ps.setString(3, obj.getEmail());
             ps.setString(4, obj.getPassword());
             ps.setString(5, obj.getGivenName());
             ps.setString(6, obj.getSurname());
-            ps.setBoolean(7, obj.getActive());
-            ps.setString(8, String.valueOf(obj.getRole()));
+            ps.setBoolean(7, obj.isActive());
+            ps.setString(8, obj.getRoleId());
             ps.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -60,7 +59,7 @@ public class UserDAO implements CrudDAO<User> {
                 User currentUser = new User(rs.getString("user_id"), rs.getString("username"),
                         rs.getString("email"), rs.getString("password"),
                         rs.getString("given_name"), rs.getString("surname"),
-                        rs.getBoolean("is_active"), UserRole.valueOf(rs.getString("role_id")));
+                        rs.getBoolean("is_active"), rs.getString("role_id"));
                 users.add(currentUser);
             }
         } catch (SQLException e) {
@@ -120,7 +119,7 @@ public class UserDAO implements CrudDAO<User> {
                 user = new User(rs.getString("user_id"), rs.getString("username"),
                         rs.getString("email"), rs.getString("password"),
                         rs.getString("given_name"), rs.getString("surname"),
-                        rs.getBoolean("is_active"), UserRole.valueOf(rs.getString("user_role")));
+                        rs.getBoolean("is_active"), rs.getString("role_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,7 +140,7 @@ public class UserDAO implements CrudDAO<User> {
                 User user = new User(rs.getString("user_id"), rs.getString("username"),
                         rs.getString("email"), rs.getString("password"),
                         rs.getString("given_name"), rs.getString("surname"),
-                        rs.getBoolean("is_active"), UserRole.valueOf(rs.getString("role_id")));
+                        rs.getBoolean("is_active"), rs.getString("role_id"));
 
                 users.add(user);
             }

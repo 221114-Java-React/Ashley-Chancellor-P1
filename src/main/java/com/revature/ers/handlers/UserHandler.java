@@ -85,7 +85,7 @@ public class UserHandler {
             if(principal == null)
                 throw new InvalidAuthException("Invalid token");
 
-            if(!principal.getUserRole().equals(UserRole.ADMIN))
+            if(!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a"))
                 throw new InvalidAuthException("You are not authorized to do this");
 
             List<User> users = userService.getAllUsers();
@@ -108,7 +108,7 @@ public class UserHandler {
             if(principal == null)
                 throw new InvalidAuthException("Invalid token");
 
-            if(!principal.getUserRole().equals(UserRole.ADMIN))
+            if(!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a"))
                 throw new InvalidAuthException("You are not authorized to do this");
 
             String username = ctx.req.getParameter("username");

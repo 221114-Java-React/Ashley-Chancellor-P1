@@ -12,15 +12,15 @@ public class Reimbursement {
     private String paymentID;
     private String authorID;
     private String resolverID;
-    private ReimbStatus status;
-    private ReimbType type;
+    private String statusId;
+    private String typeId;
 
     public Reimbursement() {
         super();
     }
 
     public Reimbursement(String id, double amount, Date submitted, Date resolved, String description, String receipt,
-                         String paymentID, String authorID, String resolverID, ReimbStatus status, ReimbType type) {
+                         String paymentID, String authorID, String resolverID, String statusId, String typeId) {
         this.id = id;
         this.amount = amount;
         this.submitted = submitted;
@@ -30,8 +30,8 @@ public class Reimbursement {
         this.paymentID = paymentID;
         this.authorID = authorID;
         this.resolverID = resolverID;
-        this.status = status;
-        this.type = type;
+        this.statusId = statusId;
+        this.typeId = typeId;
     }
 
     public String getId() {
@@ -106,20 +106,20 @@ public class Reimbursement {
         this.resolverID = resolverID;
     }
 
-    public ReimbStatus getStatus() {
-        return status;
+    public String getStatusId() {
+        return statusId;
     }
 
-    public void setStatus(ReimbStatus status) {
-        this.status = status;
+    public void setStatusId(String statusId) {
+        this.statusId = statusId;
     }
 
-    public ReimbType getType() {
-        return type;
+    public String getTypeId() {
+        return typeId;
     }
 
-    public void setType(ReimbType type) {
-        this.type = type;
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
     }
 
     @Override
@@ -134,8 +134,8 @@ public class Reimbursement {
                 ", paymentID='" + paymentID + '\'' +
                 ", authorID='" + authorID + '\'' +
                 ", resolverID='" + resolverID + '\'' +
-                ", status=" + status +
-                ", type=" + type +
+                ", statusId='" + statusId + '\'' +
+                ", typeId='" + typeId + '\'' +
                 '}';
     }
 }

@@ -2,7 +2,6 @@ package com.revature.ers.dtos.requests;
 
 public class NewUserRequest {
     private String username;
-
     private String email;
     private String password1;
     private String password2;

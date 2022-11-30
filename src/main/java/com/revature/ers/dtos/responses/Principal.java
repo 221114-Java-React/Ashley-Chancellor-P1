@@ -5,16 +5,25 @@ import com.revature.ers.models.UserRole;
 public class Principal {
     private String userId;
     private String username;
-    private UserRole userRole;
+    private String email;
+    private String givenName;
+    private String surname;
+    private boolean isActive;
+    private String roleId;
 
     public Principal() {
         super();
     }
 
-    public Principal(String userId, String username, UserRole userRole) {
+    public Principal(String userId, String username, String email, String givenName, String surname, boolean isActive,
+                     String roleId) {
         this.userId = userId;
         this.username = username;
-        this.userRole = userRole;
+        this.email = email;
+        this.givenName = givenName;
+        this.surname = surname;
+        this.isActive = isActive;
+        this.roleId = roleId;
     }
 
     public String getUserId() {
@@ -33,12 +42,44 @@ public class Principal {
         this.username = username;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleID) {
+        this.roleId = roleId;
     }
 
     @Override
@@ -46,7 +87,11 @@ public class Principal {
         return "Principal{" +
                 "userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
-                ", userRole=" + userRole +
+                ", email='" + email + '\'' +
+                ", givenName='" + givenName + '\'' +
+                ", surname='" + surname + '\'' +
+                ", isActive=" + isActive +
+                ", roleId='" + roleId + '\'' +
                 '}';
     }
 }

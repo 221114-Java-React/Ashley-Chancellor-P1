@@ -1,6 +1,5 @@
 package com.revature.ers.services;
 
-import com.revature.ers.daos.UserDAO;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.utils.JwtConfig;
 import org.junit.Before;
@@ -9,7 +8,6 @@ import org.mockito.Mockito;
 
 import java.util.UUID;
 
-import static com.revature.ers.models.UserRole.EMPLOYEE;
 import static org.junit.Assert.*;
 
 public class TokenServiceTest {
@@ -24,7 +22,9 @@ public class TokenServiceTest {
     @Test
     public void test_generateToken_givenSubject() {
         // Arrange
-        Principal subject = new Principal(UUID.randomUUID().toString(), "ScruffyC", EMPLOYEE);
+        Principal subject = new Principal(UUID.randomUUID().toString(), "ScruffyC",
+                "scruffy.chancellor@icloud.com", "Ashley", "Chancellor", true,
+                "");
 
         // Act
 
