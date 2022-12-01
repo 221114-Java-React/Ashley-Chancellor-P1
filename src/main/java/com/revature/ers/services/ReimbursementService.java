@@ -25,6 +25,24 @@ public class ReimbursementService {
         return createdReimb;
     }
 
+    public Reimbursement approve(String id, String resolverId) {
+        Reimbursement approvedReimb = reimbursementDAO.findByID(id);
+        approvedReimb.setResolved(new Date());
+        approvedReimb.setResolverId(resolverId);
+        approvedReimb.setStatusId("e601bb35-d2b6-4279-985f-3302889ed721");
+        reimbursementDAO.update(approvedReimb);
+        return approvedReimb;
+    }
+
+    public Reimbursement deny(String id, String resolverId) {
+        Reimbursement deniedReimb = reimbursementDAO.findByID(id);
+        deniedReimb.setResolved(new Date());
+        deniedReimb.setResolverId(resolverId);
+        deniedReimb.setStatusId("02f8e3b9-88a1-4259-b133-d8b5ba2861fb");
+        reimbursementDAO.update(deniedReimb);
+        return deniedReimb;
+    }
+
     public List<Reimbursement> getAllReimbs() {
         return reimbursementDAO.findAll();
     }
