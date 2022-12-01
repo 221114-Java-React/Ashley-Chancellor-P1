@@ -1,6 +1,7 @@
 package com.revature.ers.daos;
 
 import com.revature.ers.models.Reimbursement;
+import com.revature.ers.models.User;
 import com.revature.ers.utils.ConnectionFactory;
 
 import java.sql.*;
@@ -61,6 +62,31 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
                         rs.getString("resolver_id"), rs.getString("status_id"),
                         rs.getString("type_id"));
                 reimbursements.add(currentReimb);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return reimbursements;
+    }
+
+    public List<Reimbursement> findAllByAuthorId(String authorId) {
+        List<Reimbursement> reimbursements = new ArrayList<>();
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ers_reimbursements WHERE author_id = ?");
+            ps.setString(1, authorId);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Reimbursement reimbursement = new Reimbursement(rs.getString("reimb_id"),
+                        rs.getDouble("amount"), rs.getDate("submitted"),
+                        rs.getDate("resolved"), rs.getString("description"),
+                        rs.getString("payment_id"), rs.getString("author_id"),
+                        rs.getString("resolver_id"), rs.getString("status_id"),
+                        rs.getString("type_id"));
+
+                reimbursements.add(reimbursement);
             }
         } catch (SQLException e) {
             e.printStackTrace();

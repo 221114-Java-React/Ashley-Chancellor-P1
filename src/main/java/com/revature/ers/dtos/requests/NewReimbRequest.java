@@ -1,16 +1,16 @@
 package com.revature.ers.dtos.requests;
 
-public class NewTicketRequest {
+public class NewReimbRequest {
     private double amount;
     private String description;
     private String paymentId;
     private String typeId;
 
-    public NewTicketRequest() {
+    public NewReimbRequest() {
         super();
     }
 
-    public NewTicketRequest(double amount, String description, String paymentId, String typeId) {
+    public NewReimbRequest(double amount, String description, String paymentId, String typeId) {
         this.amount = amount;
         this.description = description;
         this.paymentId = paymentId;

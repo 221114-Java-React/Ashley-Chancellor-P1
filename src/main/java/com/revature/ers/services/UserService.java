@@ -11,7 +11,7 @@ import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
 import java.util.List;
 import java.util.UUID;
 
-// purpose: validate & retrieve data from DAO
+// purpose: validate & retrieve user data from DAO
 // essentially an API
 public class UserService {
     private final UserDAO userDAO;

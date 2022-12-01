@@ -35,7 +35,6 @@ public class UserHandler {
 
         try {
             logger.info("Attempting to sign up...");
-
             User createdUser;
 
             if(userService.isValidUsername(req.getUsername())) {
@@ -107,7 +106,7 @@ public class UserHandler {
             if(principal == null)
                 throw new InvalidAuthException("Invalid token");
 
-            if(!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a")) //ADMIN
+            if(!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a")) // ADMIN
                 throw new InvalidAuthException("You are not authorized to do this");
 
             String username = ctx.req.getParameter("username");

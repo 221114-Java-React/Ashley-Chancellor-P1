@@ -132,7 +132,7 @@ public class UserDAO implements CrudDAO<User> {
         List<User> users = new ArrayList<>();
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ers_users WHERE username = ? AND password = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ers_users WHERE username LIKE ?");
             ps.setString(1, username + "%");
             ResultSet rs = ps.executeQuery();
 

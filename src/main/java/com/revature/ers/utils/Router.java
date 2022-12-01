@@ -51,6 +51,8 @@ public class Router {
 
             // Reimbursement
             path("/tickets", () -> {
+                get(reimbursementHandler::getAllTickets);
+                get("/author", reimbursementHandler::getAllTicketsByAuthorId);
                 post(reimbursementHandler::submitTicket);
             });
         });

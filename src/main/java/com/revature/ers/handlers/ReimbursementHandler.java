@@ -1,20 +1,22 @@
 package com.revature.ers.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.ers.dtos.requests.NewLoginRequest;
-import com.revature.ers.dtos.requests.NewTicketRequest;
+import com.revature.ers.dtos.requests.NewReimbRequest;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.Reimbursement;
 import com.revature.ers.models.User;
 import com.revature.ers.services.ReimbursementService;
 import com.revature.ers.services.TokenService;
+import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
 import com.revature.ers.utils.custom_exceptions.InvalidTicketException;
 import io.javalin.http.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
+// purpose: handle http verbs & endpoints
 public class ReimbursementHandler {
     private final ReimbursementService reimbursementService;
     private final TokenService tokenService;
@@ -29,21 +31,20 @@ public class ReimbursementHandler {
     }
 
     public void submitTicket(Context ctx) throws IOException {
-        NewTicketRequest req = mapper.readValue(ctx.req.getInputStream(), NewTicketRequest.class);
+        NewReimbRequest req = mapper.readValue(ctx.req.getInputStream(), NewReimbRequest.class);
 
         try {
-            logger.info("Attempting to submit ticket...");
-
             String token = ctx.req.getHeader("authorization");
 
             if(token == null || token.isEmpty())
-                throw new InvalidTicketException();
+                throw new InvalidAuthException();
 
             Principal author = tokenService.extractRequesterDetails(token);
 
             if(author == null)
-                throw new InvalidTicketException("Invalid token");
+                throw new InvalidAuthException("Invalid token");
 
+            logger.info("Attempting to submit ticket...");
             Reimbursement createdTicket;
 
             if(reimbursementService.isValidAmount(req.getAmount())) {
@@ -57,11 +58,62 @@ public class ReimbursementHandler {
             ctx.status(201); // CREATED
             ctx.json(createdTicket);
             logger.info("Ticket submission attempt successful");
+        } catch(InvalidAuthException e) {
+            ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+            logger.info("Please log in to submit a ticket");
         } catch(InvalidTicketException e) {
             ctx.status(403); // FORBIDDEN
             ctx.json(e);
-            e.printStackTrace();
             logger.info("Ticket submission attempt unsuccessful");
+        }
+    }
+
+    public void getAllTickets(Context ctx) {
+        try {
+            String token = ctx.req.getHeader("authorization");
+
+            if(token == null || token.isEmpty())
+                throw new InvalidAuthException("You are not signed in");
+
+            Principal principal = tokenService.extractRequesterDetails(token);
+
+            if(principal == null)
+                throw new InvalidAuthException("Invalid token");
+
+            if(!principal.getRoleId().equals("8aa97508-5e36-472d-b831-94e252790863")) // FINANCE_MANAGER
+                throw new InvalidAuthException("You are not authorized to do this");
+
+            List<Reimbursement> tickets = reimbursementService.getAllReimbs();
+            ctx.json(tickets);
+        } catch(InvalidAuthException e) {
+            ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+        }
+    }
+
+    public void getAllTicketsByAuthorId(Context ctx) {
+        try {
+            String token = ctx.req.getHeader("authorization");
+
+            if(token == null || token.isEmpty())
+                throw new InvalidAuthException("You are not signed in");
+
+            Principal principal = tokenService.extractRequesterDetails(token);
+
+            if(principal == null)
+                throw new InvalidAuthException("Invalid token");
+
+            String authorId = ctx.req.getParameter("authorId");
+
+            if(!principal.getUserId().equals(authorId)) // user that submitted ticket
+                throw new InvalidAuthException("You are not authorized to do this");
+
+            List<Reimbursement> tickets = reimbursementService.getAllReimbsByAuthorId(authorId);
+            ctx.json(tickets);
+        } catch(InvalidAuthException e) {
+            ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
         }
     }
 }
