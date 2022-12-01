@@ -23,7 +23,7 @@ public class UserService {
     public User signup(NewUserRequest req) {
         User createdUser = new User(UUID.randomUUID().toString(), req.getUsername(), req.getEmail(),
             req.getPassword1(), req.getGivenName(), req.getSurname(), true,
-                "05836bdd-83c4-4ecb-a255-c7f1f7e0bd40");
+                "05836bdd-83c4-4ecb-a255-c7f1f7e0bd40"); // EMPLOYEE
 
         userDAO.save(createdUser);
         return createdUser;

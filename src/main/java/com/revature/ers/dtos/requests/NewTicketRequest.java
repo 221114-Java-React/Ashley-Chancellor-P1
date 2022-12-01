@@ -1,18 +1,16 @@
 package com.revature.ers.dtos.requests;
 
-import java.util.Date;
-
-public class NewReimbRequest {
+public class NewTicketRequest {
     private double amount;
     private String description;
     private String paymentId;
     private String typeId;
 
-    public NewReimbRequest() {
+    public NewTicketRequest() {
         super();
     }
 
-    public NewReimbRequest(double amount, String description, String paymentId, String typeId) {
+    public NewTicketRequest(double amount, String description, String paymentId, String typeId) {
         this.amount = amount;
         this.description = description;
         this.paymentId = paymentId;
@@ -53,7 +51,7 @@ public class NewReimbRequest {
 
     @Override
     public String toString() {
-        return "NewReimbRequest{" +
+        return "NewTicketRequest{" +
                 "amount=" + amount +
                 ", description='" + description + '\'' +
                 ", paymentId='" + paymentId + '\'' +

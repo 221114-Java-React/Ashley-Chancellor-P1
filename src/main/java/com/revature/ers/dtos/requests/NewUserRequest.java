@@ -12,7 +12,8 @@ public class NewUserRequest {
         super();
     }
 
-    public NewUserRequest(String username, String email, String password1, String password2, String givenName, String surname) {
+    public NewUserRequest(String username, String email, String password1, String password2, String givenName, String
+            surname) {
         this.username = username;
         this.email = email;
         this.password1 = password1;

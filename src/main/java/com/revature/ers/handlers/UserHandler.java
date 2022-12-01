@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ers.dtos.requests.NewUserRequest;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
-import com.revature.ers.models.UserRole;
 import com.revature.ers.services.TokenService;
 import com.revature.ers.services.UserService;
 import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
@@ -85,7 +84,7 @@ public class UserHandler {
             if(principal == null)
                 throw new InvalidAuthException("Invalid token");
 
-            if(!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a"))
+            if(!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a")) // ADMIN
                 throw new InvalidAuthException("You are not authorized to do this");
 
             List<User> users = userService.getAllUsers();
@@ -108,7 +107,7 @@ public class UserHandler {
             if(principal == null)
                 throw new InvalidAuthException("Invalid token");
 
-            if(!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a"))
+            if(!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a")) //ADMIN
                 throw new InvalidAuthException("You are not authorized to do this");
 
             String username = ctx.req.getParameter("username");
