@@ -14,9 +14,9 @@ public class ReimbursementService {
         this.reimbursementDAO = reimbursementDAO;
     }
 
-    public Reimbursement submit(NewTicketRequest req) {
+    public Reimbursement submit(NewTicketRequest req, String authorId) {
         Reimbursement createdTicket = new Reimbursement(UUID.randomUUID().toString(), req.getAmount(), new Date(),
-                null, req.getDescription(), null, req.getPaymentId(), "", null,
+                null, req.getDescription(), req.getPaymentId(), authorId, null,
                 "4eac4123-f552-4ea5-ab86-3ca7715e6f20" /* PENDING */, req.getTypeId());
 
         reimbursementDAO.save(createdTicket);
@@ -26,10 +26,6 @@ public class ReimbursementService {
     // helper functions
     public boolean isValidAmount(double amount) {
         return amount > 0 && amount < 5000;
-    }
-
-    public boolean isValidSubmitted(Date submitted) {
-        return submitted.compareTo(new Date()) < 0;
     }
 
     public boolean isEmptyDescription(String description) {

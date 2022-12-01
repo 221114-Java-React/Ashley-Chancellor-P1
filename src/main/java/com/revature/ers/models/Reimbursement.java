@@ -8,7 +8,6 @@ public class Reimbursement {
     private Date submitted;
     private Date resolved;
     private String description;
-    private String receipt;
     private String paymentId;
     private String authorId;
     private String resolverId;
@@ -19,14 +18,13 @@ public class Reimbursement {
         super();
     }
 
-    public Reimbursement(String id, double amount, Date submitted, Date resolved, String description, String receipt,
-                         String paymentId, String authorId, String resolverId, String statusId, String typeId) {
+    public Reimbursement(String id, double amount, Date submitted, Date resolved, String description, String paymentId,
+                         String authorId, String resolverId, String statusId, String typeId) {
         this.id = id;
         this.amount = amount;
         this.submitted = submitted;
         this.resolved = resolved;
         this.description = description;
-        this.receipt = receipt;
         this.paymentId = paymentId;
         this.authorId = authorId;
         this.resolverId = resolverId;
@@ -72,14 +70,6 @@ public class Reimbursement {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getReceipt() {
-        return receipt;
-    }
-
-    public void setReceipt(String receipt) {
-        this.receipt = receipt;
     }
 
     public String getPaymentId() {
@@ -130,10 +120,9 @@ public class Reimbursement {
                 ", submitted=" + submitted +
                 ", resolved=" + resolved +
                 ", description='" + description + '\'' +
-                ", receipt='" + receipt + '\'' +
-                ", paymentID='" + paymentId + '\'' +
-                ", authorID='" + authorId + '\'' +
-                ", resolverID='" + resolverId + '\'' +
+                ", paymentId='" + paymentId + '\'' +
+                ", authorId='" + authorId + '\'' +
+                ", resolverId='" + resolverId + '\'' +
                 ", statusId='" + statusId + '\'' +
                 ", typeId='" + typeId + '\'' +
                 '}';

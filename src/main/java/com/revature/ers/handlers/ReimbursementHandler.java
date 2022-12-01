@@ -1,6 +1,7 @@
 package com.revature.ers.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.ers.dtos.requests.NewLoginRequest;
 import com.revature.ers.dtos.requests.NewTicketRequest;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.Reimbursement;
@@ -27,7 +28,7 @@ public class ReimbursementHandler {
         this.mapper = mapper;
     }
 
-    public void submit(Context ctx) throws IOException {
+    public void submitTicket(Context ctx) throws IOException {
         NewTicketRequest req = mapper.readValue(ctx.req.getInputStream(), NewTicketRequest.class);
 
         try {
@@ -44,9 +45,22 @@ public class ReimbursementHandler {
                 throw new InvalidTicketException("Invalid token");
 
             Reimbursement createdTicket;
+
+            if(reimbursementService.isValidAmount(req.getAmount())) {
+                if(!reimbursementService.isEmptyDescription(req.getDescription()))
+                    createdTicket = reimbursementService.submit(req, author.getUserId());
+                else
+                    throw new InvalidTicketException("Please enter a description");
+            } else
+                throw new InvalidTicketException("Amount must be between $0 and $5,000");
+
+            ctx.status(201); // CREATED
+            ctx.json(createdTicket);
+            logger.info("Ticket submission attempt successful");
         } catch(InvalidTicketException e) {
             ctx.status(403); // FORBIDDEN
             ctx.json(e);
+            e.printStackTrace();
             logger.info("Ticket submission attempt unsuccessful");
         }
     }

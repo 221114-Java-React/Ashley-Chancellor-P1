@@ -28,7 +28,8 @@ public class Router {
         // Reimbursement
         ReimbursementDAO reimbursementDAO = new ReimbursementDAO();
         ReimbursementService reimbursementService = new ReimbursementService(reimbursementDAO);
-        //ReimbursementHandler reimbursementHandler = new ReimbursementHandler(reimbursementService);
+        ReimbursementHandler reimbursementHandler = new ReimbursementHandler(reimbursementService, tokenService,
+                mapper);
 
         // Auth
         AuthHandler authHandler = new AuthHandler(userService, tokenService, mapper);
@@ -46,6 +47,11 @@ public class Router {
             // Auth
             path("/auth", () -> {
                 post(authHandler::authenticateUser);
+            });
+
+            // Reimbursement
+            path("/tickets", () -> {
+                post(reimbursementHandler::submitTicket);
             });
         });
     }

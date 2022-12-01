@@ -63,7 +63,7 @@ public class UserHandler {
                 throw new InvalidUserException("Username must be 8-20 characters long");
 
             ctx.status(201); // CREATED
-            ctx.json(createdUser.getId());
+            ctx.json(createdUser);
             logger.info("Signup attempt successful");
         } catch(InvalidUserException e) {
             ctx.status(403); // FORBIDDEN
@@ -77,7 +77,7 @@ public class UserHandler {
             String token = ctx.req.getHeader("authorization");
 
             if(token == null || token.isEmpty())
-                throw new InvalidAuthException();
+                throw new InvalidAuthException("You are not signed in");
 
             Principal principal = tokenService.extractRequesterDetails(token);
 
