@@ -8,6 +8,7 @@ import com.revature.ers.models.User;
 import com.revature.ers.services.ReimbursementService;
 import com.revature.ers.services.TokenService;
 import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
+import com.revature.ers.utils.custom_exceptions.InvalidStatusException;
 import com.revature.ers.utils.custom_exceptions.InvalidTicketException;
 import io.javalin.http.Context;
 import org.slf4j.Logger;
@@ -91,6 +92,9 @@ public class ReimbursementHandler {
         } catch(InvalidAuthException e) {
             ctx.status(401); // UNAUTHORIZED
             ctx.json(e);
+        } catch(InvalidStatusException e) {
+            ctx.status(400);
+            ctx.json(e);
         }
     }
 
@@ -115,6 +119,9 @@ public class ReimbursementHandler {
             logger.info("Ticket denied");
         } catch(InvalidAuthException e) {
             ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+        } catch(InvalidStatusException e) {
+            ctx.status(400);
             ctx.json(e);
         }
     }
