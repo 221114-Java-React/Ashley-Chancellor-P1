@@ -9,7 +9,7 @@ public interface CrudDAO<T> {
 
     void update (T obj);
 
-    T findByID(String id);
+    T findById(String id);
 
     List<T> findAll();
 }

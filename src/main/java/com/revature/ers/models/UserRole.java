@@ -8,9 +8,9 @@ public class UserRole {
         super();
     }
 
-    public UserRole(String id, Role role) {
+    public UserRole(String id, String role) {
         this.id = id;
-        this.role = role;
+        this.role = Role.valueOf(role);
     }
 
     public String getId() {
@@ -25,8 +25,8 @@ public class UserRole {
         return role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRole(String role) {
+        this.role = Role.valueOf(role);
     }
 
     @Override

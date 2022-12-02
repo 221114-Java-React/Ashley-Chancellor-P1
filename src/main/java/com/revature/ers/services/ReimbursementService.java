@@ -28,10 +28,10 @@ public class ReimbursementService {
     }
 
     public Reimbursement approve(String id, String resolverId) {
-        Reimbursement approvedReimb = reimbursementDAO.findByID(id);
+        Reimbursement approvedReimb = reimbursementDAO.findById(id);
 
         if(!Objects.equals(approvedReimb.getStatusId(), "4eac4123-f552-4ea5-ab86-3ca7715e6f20")) // PENDING
-            throw new InvalidStatusException("Ticket has already been approved or denied");
+            throw new InvalidStatusException("Ticket has already been resolved");
 
         approvedReimb.setResolved(new Date());
         approvedReimb.setResolverId(resolverId);
@@ -41,10 +41,10 @@ public class ReimbursementService {
     }
 
     public Reimbursement deny(String id, String resolverId) {
-        Reimbursement deniedReimb = reimbursementDAO.findByID(id);
+        Reimbursement deniedReimb = reimbursementDAO.findById(id);
 
         if(!Objects.equals(deniedReimb.getStatusId(), "4eac4123-f552-4ea5-ab86-3ca7715e6f20")) // PENDING
-            throw new InvalidStatusException("Ticket has already been approved or denied"); // APPROVED
+            throw new InvalidStatusException("Ticket has already been resolved"); // APPROVED
 
         deniedReimb.setResolved(new Date());
         deniedReimb.setResolverId(resolverId);
@@ -59,6 +59,10 @@ public class ReimbursementService {
 
     public List<Reimbursement> getAllReimbsByAuthorId(String authorId) {
         return reimbursementDAO.findAllByAuthorId(authorId);
+    }
+
+    public List<Reimbursement> getAllReimbsByStatusId(String statusId) {
+        return reimbursementDAO.findAllByAuthorId(statusId);
     }
 
     // helper functions

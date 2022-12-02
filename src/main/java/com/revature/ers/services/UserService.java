@@ -1,11 +1,11 @@
 package com.revature.ers.services;
 
 import com.revature.ers.daos.UserDAO;
+import com.revature.ers.daos.UserRoleDAO;
 import com.revature.ers.dtos.requests.NewLoginRequest;
 import com.revature.ers.dtos.requests.NewUserRequest;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
-import com.revature.ers.models.UserRole;
 import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
 
 import java.util.List;
@@ -29,8 +29,16 @@ public class UserService {
         return createdUser;
     }
 
+    public String getRole(String id) {
+        final UserRoleDAO userRoleDAO = new UserRoleDAO();
+        User user = userDAO.findById(id);
+        String roleId = user.getRoleId();
+        String role = userRoleDAO.findRoleById(roleId);
+        return role;
+    }
+
     public User setRole(String id, String roleId) {
-        User user = userDAO.findByID(id);
+        User user = userDAO.findById(id);
         user.setRoleId(roleId);
         userDAO.update(user);
         return user;

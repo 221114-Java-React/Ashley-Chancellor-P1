@@ -54,6 +54,7 @@ public class Router {
             path("/tickets", () -> {
                 get(reimbursementHandler::getAllTickets);
                 get("/author", reimbursementHandler::getAllTicketsByAuthorId);
+                get("/status", reimbursementHandler::getAllTicketsByStatusId);
                 post(reimbursementHandler::submitTicket);
                 put("/approve", reimbursementHandler::approveTicket);
                 put("/deny", reimbursementHandler::denyTicket);

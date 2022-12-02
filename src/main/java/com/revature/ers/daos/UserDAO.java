@@ -47,7 +47,7 @@ public class UserDAO implements CrudDAO<User> {
     }
 
     @Override
-    public User findByID(String id) {
+    public User findById(String id) {
         User user = null;
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ers.dtos.requests.NewUserRequest;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
+import com.revature.ers.models.UserRole;
 import com.revature.ers.services.TokenService;
 import com.revature.ers.services.UserService;
 import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
@@ -90,7 +91,7 @@ public class UserHandler {
             String roleId = ctx.req.getParameter("roleId");
             User user = userService.setRole(id, roleId);
             ctx.json(user);
-            logger.info("User role set to");
+            logger.info("User role set");
         } catch(InvalidAuthException e) {
             ctx.status(401); // UNAUTHORIZED
             ctx.json(e);

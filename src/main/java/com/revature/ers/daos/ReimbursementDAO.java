@@ -1,7 +1,6 @@
 package com.revature.ers.daos;
 
 import com.revature.ers.models.Reimbursement;
-import com.revature.ers.models.User;
 import com.revature.ers.utils.ConnectionFactory;
 
 import java.sql.*;
@@ -52,7 +51,7 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
     }
 
     @Override
-    public Reimbursement findByID(String id) {
+    public Reimbursement findById(String id) {
         Reimbursement reimbursement = null;
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
