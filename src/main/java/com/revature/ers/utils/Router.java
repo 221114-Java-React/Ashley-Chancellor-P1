@@ -42,7 +42,7 @@ public class Router {
                 get(userHandler::getAllUsers);
                 get("/name", userHandler::getAllUsersByUsername);
                 post(userHandler::signup);
-                post("/role", userHandler::setRole);
+                put("/role", userHandler::setRole);
             });
 
             // Auth
@@ -55,8 +55,8 @@ public class Router {
                 get(reimbursementHandler::getAllTickets);
                 get("/author", reimbursementHandler::getAllTicketsByAuthorId);
                 post(reimbursementHandler::submitTicket);
-                post("/approve", reimbursementHandler::approveTicket);
-                post("/deny", reimbursementHandler::denyTicket);
+                put("/approve", reimbursementHandler::approveTicket);
+                put("/deny", reimbursementHandler::denyTicket);
             });
         });
     }
