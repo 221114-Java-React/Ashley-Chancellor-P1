@@ -7,6 +7,7 @@ import com.revature.ers.utils.custom_exceptions.InvalidStatusException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 // purpose: validate & retrieve reimb data from DAO
@@ -29,7 +30,7 @@ public class ReimbursementService {
     public Reimbursement approve(String id, String resolverId) {
         Reimbursement approvedReimb = reimbursementDAO.findByID(id);
 
-        if(approvedReimb.getStatusId() != "4eac4123-f552-4ea5-ab86-3ca7715e6f20") // PENDING
+        if(!Objects.equals(approvedReimb.getStatusId(), "4eac4123-f552-4ea5-ab86-3ca7715e6f20")) // PENDING
             throw new InvalidStatusException("Ticket has already been approved or denied");
 
         approvedReimb.setResolved(new Date());
@@ -42,7 +43,7 @@ public class ReimbursementService {
     public Reimbursement deny(String id, String resolverId) {
         Reimbursement deniedReimb = reimbursementDAO.findByID(id);
 
-        if(deniedReimb.getStatusId() != "4eac4123-f552-4ea5-ab86-3ca7715e6f20") // PENDING
+        if(!Objects.equals(deniedReimb.getStatusId(), "4eac4123-f552-4ea5-ab86-3ca7715e6f20")) // PENDING
             throw new InvalidStatusException("Ticket has already been approved or denied"); // APPROVED
 
         deniedReimb.setResolved(new Date());
