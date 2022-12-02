@@ -29,6 +29,13 @@ public class UserService {
         return createdUser;
     }
 
+    public User setRole(String id, String roleId) {
+        User user = userDAO.findByID(id);
+        user.setRoleId(roleId);
+        userDAO.update(user);
+        return user;
+    }
+
     public Principal login(NewLoginRequest req) {
         User validUser = userDAO.findByUsernameAndPassword(req.getUsername(), req.getPassword());
 

@@ -3,10 +3,7 @@ package com.revature.ers.daos;
 import com.revature.ers.models.User;
 import com.revature.ers.utils.ConnectionFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +36,14 @@ public class UserDAO implements CrudDAO<User> {
 
     @Override
     public void update(User obj) {
-
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("UPDATE ers_users SET role_id = ? WHERE user_id = ?");
+            ps.setString(1, obj.getRoleId());
+            ps.setString(2, obj.getId());
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

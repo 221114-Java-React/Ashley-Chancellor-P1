@@ -45,6 +45,7 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
             ps.setString(2, obj.getResolverId());
             ps.setString(3, obj.getStatusId());
             ps.setString(4, obj.getId());
+            ps.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
         }

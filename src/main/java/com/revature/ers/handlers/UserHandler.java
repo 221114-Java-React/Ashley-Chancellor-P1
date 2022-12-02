@@ -71,6 +71,32 @@ public class UserHandler {
         }
     }
 
+    public void setRole(Context ctx) {
+        try {
+            String token = ctx.req.getHeader("authorization");
+
+            if (token == null || token.isEmpty())
+                throw new InvalidAuthException("You are not signed in");
+
+            Principal principal = tokenService.extractRequesterDetails(token);
+
+            if (principal == null)
+                throw new InvalidAuthException("Invalid token");
+
+            if (!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a")) // ADMIN
+                throw new InvalidAuthException("You are not authorized to do this");
+
+            String id = ctx.req.getParameter("id");
+            String roleId = ctx.req.getParameter("roleId");
+            User user = userService.setRole(id, roleId);
+            ctx.json(user);
+            logger.info("User role set to");
+        } catch(InvalidAuthException e) {
+            ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+        }
+    }
+
     public void getAllUsers(Context ctx) {
         try {
             String token = ctx.req.getHeader("authorization");
