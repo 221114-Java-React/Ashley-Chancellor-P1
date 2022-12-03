@@ -61,8 +61,16 @@ public class ReimbursementService {
         return reimbursementDAO.findAllByAuthorId(authorId);
     }
 
+    public List<Reimbursement> getAllReimbsByResolverId(String resolverId) {
+        return reimbursementDAO.findAllByResolverId(resolverId);
+    }
+
     public List<Reimbursement> getAllReimbsByStatusId(String statusId) {
-        return reimbursementDAO.findAllByAuthorId(statusId);
+        return reimbursementDAO.findAllByStatusId(statusId);
+    }
+
+    public List<Reimbursement> getAllReimbsByTypeId(String typeId) {
+        return reimbursementDAO.findAllByTypeId(typeId);
     }
 
     // helper functions

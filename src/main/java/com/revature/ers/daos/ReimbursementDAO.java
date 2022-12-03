@@ -124,12 +124,62 @@ public class ReimbursementDAO implements CrudDAO<Reimbursement> {
         return reimbursements;
     }
 
+    public List<Reimbursement> findAllByResolverId(String resolverId) {
+        List<Reimbursement> reimbursements = new ArrayList<>();
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ers_reimbursements WHERE resolver_id = ?");
+            ps.setString(1, resolverId);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Reimbursement reimbursement = new Reimbursement(rs.getString("reimb_id"),
+                        rs.getDouble("amount"), rs.getDate("submitted"),
+                        rs.getDate("resolved"), rs.getString("description"),
+                        rs.getString("payment_id"), rs.getString("author_id"),
+                        rs.getString("resolver_id"), rs.getString("status_id"),
+                        rs.getString("type_id"));
+
+                reimbursements.add(reimbursement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return reimbursements;
+    }
+
     public List<Reimbursement> findAllByStatusId(String statusId) {
         List<Reimbursement> reimbursements = new ArrayList<>();
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM ers_reimbursements WHERE status_id = ?");
             ps.setString(1, statusId);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Reimbursement reimbursement = new Reimbursement(rs.getString("reimb_id"),
+                        rs.getDouble("amount"), rs.getDate("submitted"),
+                        rs.getDate("resolved"), rs.getString("description"),
+                        rs.getString("payment_id"), rs.getString("author_id"),
+                        rs.getString("resolver_id"), rs.getString("status_id"),
+                        rs.getString("type_id"));
+
+                reimbursements.add(reimbursement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return reimbursements;
+    }
+
+    public List<Reimbursement> findAllByTypeId(String typeId) {
+        List<Reimbursement> reimbursements = new ArrayList<>();
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ers_reimbursements WHERE type_id = ?");
+            ps.setString(1, typeId);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {

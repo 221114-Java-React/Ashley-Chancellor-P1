@@ -163,10 +163,36 @@ public class ReimbursementHandler {
 
             String authorId = ctx.req.getParameter("authorId");
 
-            if(!principal.getUserId().equals(authorId)) // user that submitted ticket
+            if(!(principal.getUserId().equals(authorId) // user that submitted ticket
+                    || principal.getRoleId().equals("8aa97508-5e36-472d-b831-94e252790863"))) // FINANCE MANAGER
                 throw new InvalidAuthException("You are not authorized to do this");
 
             List<Reimbursement> tickets = reimbursementService.getAllReimbsByAuthorId(authorId);
+            ctx.json(tickets);
+        } catch(InvalidAuthException e) {
+            ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+        }
+    }
+
+    public void getAllTicketsByResolverId(Context ctx) {
+        try {
+            String token = ctx.req.getHeader("authorization");
+
+            if(token == null || token.isEmpty())
+                throw new InvalidAuthException("You are not signed in");
+
+            Principal principal = tokenService.extractRequesterDetails(token);
+
+            if(principal == null)
+                throw new InvalidAuthException("Invalid token");
+
+            String resolverId = ctx.req.getParameter("resolverId");
+
+            if(!principal.getRoleId().equals("8aa97508-5e36-472d-b831-94e252790863")) // FINANCE_MANAGER
+                throw new InvalidAuthException("You are not authorized to do this");
+
+            List<Reimbursement> tickets = reimbursementService.getAllReimbsByResolverId(resolverId);
             ctx.json(tickets);
         } catch(InvalidAuthException e) {
             ctx.status(401); // UNAUTHORIZED
@@ -192,6 +218,31 @@ public class ReimbursementHandler {
                 throw new InvalidAuthException("You are not authorized to do this");
 
             List<Reimbursement> tickets = reimbursementService.getAllReimbsByStatusId(statusId);
+            ctx.json(tickets);
+        } catch(InvalidAuthException e) {
+            ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+        }
+    }
+
+    public void getAllTicketsByTypeId(Context ctx) {
+        try {
+            String token = ctx.req.getHeader("authorization");
+
+            if(token == null || token.isEmpty())
+                throw new InvalidAuthException("You are not signed in");
+
+            Principal principal = tokenService.extractRequesterDetails(token);
+
+            if(principal == null)
+                throw new InvalidAuthException("Invalid token");
+
+            String typeId = ctx.req.getParameter("typeId");
+
+            if(!principal.getRoleId().equals("8aa97508-5e36-472d-b831-94e252790863")) // FINANCE_MANAGER
+                throw new InvalidAuthException("You are not authorized to do this");
+
+            List<Reimbursement> tickets = reimbursementService.getAllReimbsByTypeId(typeId);
             ctx.json(tickets);
         } catch(InvalidAuthException e) {
             ctx.status(401); // UNAUTHORIZED
