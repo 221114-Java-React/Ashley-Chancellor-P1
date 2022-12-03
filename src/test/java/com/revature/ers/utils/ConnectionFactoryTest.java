@@ -1,6 +1,7 @@
 package com.revature.ers.utils;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,7 +11,6 @@ import static org.junit.Assert.*;
 
 public class ConnectionFactoryTest {
     private static ConnectionFactory sut;
-    private final Properties mockProps = new Properties();
 
     @Test
     public void test_getInstance() {
@@ -29,8 +29,9 @@ public class ConnectionFactoryTest {
         // Arrange
 
         // Act
-        Connection condition = sut.getConnection();
+        Connection condition = sut.getInstance().getConnection();
 
         // Assert
+        assertNotNull(condition);
     }
 }

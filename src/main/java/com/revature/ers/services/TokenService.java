@@ -1,7 +1,6 @@
 package com.revature.ers.services;
 
 import com.revature.ers.dtos.responses.Principal;
-import com.revature.ers.models.UserRole;
 import com.revature.ers.utils.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

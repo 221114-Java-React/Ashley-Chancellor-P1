@@ -30,7 +30,7 @@ public class ReimbursementService {
     public Reimbursement approve(String id, String resolverId) {
         Reimbursement approvedReimb = reimbursementDAO.findById(id);
 
-        if(!Objects.equals(approvedReimb.getStatusId(), "4eac4123-f552-4ea5-ab86-3ca7715e6f20")) // PENDING
+        if(!approvedReimb.getStatusId().equals("4eac4123-f552-4ea5-ab86-3ca7715e6f20")) // PENDING
             throw new InvalidStatusException("Ticket has already been resolved");
 
         approvedReimb.setResolved(new Date());
@@ -43,7 +43,7 @@ public class ReimbursementService {
     public Reimbursement deny(String id, String resolverId) {
         Reimbursement deniedReimb = reimbursementDAO.findById(id);
 
-        if(!Objects.equals(deniedReimb.getStatusId(), "4eac4123-f552-4ea5-ab86-3ca7715e6f20")) // PENDING
+        if(!deniedReimb.getStatusId().equals("4eac4123-f552-4ea5-ab86-3ca7715e6f20")) // PENDING
             throw new InvalidStatusException("Ticket has already been resolved"); // APPROVED
 
         deniedReimb.setResolved(new Date());

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ers.dtos.requests.NewUserRequest;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
-import com.revature.ers.models.UserRole;
 import com.revature.ers.services.TokenService;
 import com.revature.ers.services.UserService;
 import com.revature.ers.utils.custom_exceptions.InvalidAuthException;
@@ -89,10 +88,17 @@ public class UserHandler {
 
             String id = ctx.req.getParameter("id");
             User user = userService.setPassword(id, "passw0rd");
+
+            if(user == null)
+                throw new InvalidUserException("User not found");
+
             ctx.json(user);
             logger.info("User password has been reset");
         } catch(InvalidAuthException e) {
             ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+        } catch(InvalidUserException e) {
+            ctx.status(404); // NOT FOUND
             ctx.json(e);
         }
     }
@@ -114,10 +120,17 @@ public class UserHandler {
 
             String id = ctx.req.getParameter("id");
             User user = userService.setActive(id);
+
+            if(user == null)
+                throw new InvalidUserException("User not found");
+
             ctx.json(user);
             logger.info("User active status has been changed");
         } catch(InvalidAuthException e) {
             ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+        } catch(InvalidUserException e) {
+            ctx.status(404); // NOT FOUND
             ctx.json(e);
         }
     }
@@ -139,11 +152,18 @@ public class UserHandler {
 
             String id = ctx.req.getParameter("id");
             String roleId = ctx.req.getParameter("roleId");
-            User user = userService.setRole(id, roleId);
+            User user = userService.setRoleId(id, roleId);
+
+            if(user == null)
+                throw new InvalidUserException("User not found");
+
             ctx.json(user);
             logger.info("User role set");
         } catch(InvalidAuthException e) {
             ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+        } catch(InvalidUserException e) {
+            ctx.status(404); // NOT FOUND
             ctx.json(e);
         }
     }

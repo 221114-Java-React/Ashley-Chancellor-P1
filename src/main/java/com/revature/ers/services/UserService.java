@@ -1,7 +1,6 @@
 package com.revature.ers.services;
 
 import com.revature.ers.daos.UserDAO;
-import com.revature.ers.daos.UserRoleDAO;
 import com.revature.ers.dtos.requests.NewLoginRequest;
 import com.revature.ers.dtos.requests.NewUserRequest;
 import com.revature.ers.dtos.responses.Principal;
@@ -31,6 +30,10 @@ public class UserService {
 
     public User setPassword(String id, String password) {
         User user = userDAO.findById(id);
+
+        if(user == null)
+            return null;
+
         user.setPassword(password);
         userDAO.update(user);
         return user;
@@ -38,6 +41,9 @@ public class UserService {
 
     public User setActive(String id) {
         User user = userDAO.findById(id);
+
+        if(user == null)
+            return null;
 
         if(user.isActive())
             user.setActive(false);
@@ -48,16 +54,12 @@ public class UserService {
         return user;
     }
 
-    public String getRole(String id) {
-        final UserRoleDAO userRoleDAO = new UserRoleDAO();
+    public User setRoleId(String id, String roleId) {
         User user = userDAO.findById(id);
-        String roleId = user.getRoleId();
-        String role = userRoleDAO.findRoleById(roleId);
-        return role;
-    }
 
-    public User setRole(String id, String roleId) {
-        User user = userDAO.findById(id);
+        if(user == null)
+            return null;
+
         user.setRoleId(roleId);
         userDAO.update(user);
         return user;

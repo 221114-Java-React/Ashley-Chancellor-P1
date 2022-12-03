@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -213,7 +214,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_signup_persistUserGivenValidUsernameEmailPasswordAndName() {
+    public void test_signup_persistUserGivenValidParameters() {
         // Arrange
         UserService spySut = Mockito.spy(sut);
         String validUsername = "tester001";
@@ -222,8 +223,8 @@ public class UserServiceTest {
         String validPassword2 = "passw0rd";
         String validGivenName = "John";
         String validSurname = "Smith";
-        NewUserRequest stubbedReq = new NewUserRequest(validUsername, validEmail, validPassword1, validPassword2,
-                validGivenName, validSurname);
+        NewUserRequest stubbedReq = new NewUserRequest
+                (validUsername, validEmail, validPassword1, validPassword2, validGivenName, validSurname);
 
         // Act
         User createdUser = spySut.signup(stubbedReq);
@@ -231,21 +232,25 @@ public class UserServiceTest {
         // Assert
         assertNotNull(createdUser);
         assertNotNull(createdUser.getId());
-        assertNotNull(createdUser.getUsername());
-        assertNotNull(createdUser.getPassword());
-        assertNotEquals("", createdUser.getUsername());
+        assertEquals(validUsername, createdUser.getUsername());
+        assertEquals(validEmail, createdUser.getEmail());
+        assertEquals(validPassword1, createdUser.getPassword());
+        assertEquals(validGivenName, createdUser.getGivenName());
+        assertEquals(validSurname, createdUser.getSurname());
+        assertFalse(createdUser.isActive());
         assertEquals("05836bdd-83c4-4ecb-a255-c7f1f7e0bd40", createdUser.getRoleId());
         Mockito.verify(mockUserDAO, Mockito.times(1)).save(createdUser);
     }
 
     @Test
-    public void test_login_persistUserGivenValidUsernameAndPassword () {
+    public void test_login_persistUserGivenValidUsernameAndPassword() {
         // Arrange
         UserService spySut = Mockito.spy(sut);
         String validUsername = "tester001";
         String validPassword = "passw0rd";
-        User stubbedUser = new User(UUID.randomUUID().toString(), validUsername, "tester1@test.com",
-                validPassword, "John", "Smith", true, "");
+        User stubbedUser = new User
+                (UUID.randomUUID().toString(), validUsername, "tester1@test.com", validPassword,
+                        "John", "Smith", true, "05836bdd-83c4-4ecb-a255-c7f1f7e0bd40");
         NewLoginRequest stubbedReq = new NewLoginRequest(validUsername, validPassword);
 
         Mockito.when(mockUserDAO.findByUsernameAndPassword(validUsername, validPassword)).thenReturn(stubbedUser);
@@ -256,9 +261,163 @@ public class UserServiceTest {
         // Assert
         assertNotNull(principal);
         assertNotNull(principal.getUserId());
-        assertNotNull(principal.getUsername());
-        assertNotEquals("", principal.getUsername());
+        assertEquals(validUsername, principal.getUsername());
+        assertNotNull(principal.getEmail());
+        assertNotEquals("", principal.getEmail());
+        assertNotNull(principal.getGivenName());
+        assertNotEquals("", principal.getGivenName());
+        assertNotNull(principal.getSurname());
+        assertNotEquals("", principal.getSurname());
+        assertTrue(principal.isActive());
+        assertNotNull(principal.getRoleId());
+        assertNotEquals("", principal.getRoleId());
         Mockito.verify(mockUserDAO, Mockito.times(1)).findByUsernameAndPassword(
                 stubbedReq.getUsername(), stubbedReq.getPassword());;
+    }
+
+    @Test
+    public void test_getAllUsers_givenUsers() {
+        // Arrange
+        User stubbedUser1 = new User();
+        User stubbedUser2 = new User();
+        User stubbedUser3 = new User();
+        List <User> stubbedUsers = Arrays.asList(stubbedUser1, stubbedUser2, stubbedUser3);
+        Mockito.when(mockUserDAO.findAll()).thenReturn(stubbedUsers);
+
+        // Act
+        List<User> condition = sut.getAllUsers();
+
+        // Assert
+        assertFalse(condition.isEmpty());
+    }
+
+    @Test
+    public void test_getAllUsers_givenNoUsers() {
+        // Arrange
+        List <User> stubbedUsers = new ArrayList<>();
+        Mockito.when(mockUserDAO.findAll()).thenReturn(stubbedUsers);
+
+        // Act
+        List<User> condition = sut.getAllUsers();
+
+        // Assert
+        assertTrue(condition.isEmpty());
+    }
+
+    @Test
+    public void test_getAllUsersByUsername_givenValidUsername() {
+        // Arrange
+        String validUsername = "test";
+        User stubbedUser1 = new User();
+        User stubbedUser2 = new User();
+        User stubbedUser3 = new User();
+        List <User> stubbedUsers = Arrays.asList(stubbedUser1, stubbedUser2, stubbedUser3);
+        Mockito.when(mockUserDAO.findAllByUsername(validUsername)).thenReturn(stubbedUsers);
+
+        // Act
+        List<User> condition = sut.getAllUsersByUsername(validUsername);
+
+        // Assert
+        assertFalse(condition.isEmpty());
+    }
+
+    @Test
+    public void test_getAllUsersByUsername_givenInvalidUsername() {
+        // Arrange
+        String invalidUsername = "ScruffyC";
+        List <User> stubbedUsers = new ArrayList<>();
+        Mockito.when(mockUserDAO.findAllByUsername(invalidUsername)).thenReturn(stubbedUsers);
+
+        // Act
+        List<User> condition = sut.getAllUsersByUsername(invalidUsername);
+
+        // Assert
+        assertTrue(condition.isEmpty());
+    }
+
+    @Test
+    public void test_setPassword_givenValidId() {
+        // Arrange
+        String validId = UUID.randomUUID().toString();
+        String password = "passw0rd";
+        User stubbedUser = new User();
+
+        Mockito.when(mockUserDAO.findById(validId)).thenReturn(stubbedUser);
+
+        // Act
+        User condition = sut.setPassword(validId, password);
+
+        // Assert
+        assertEquals(password, condition.getPassword());
+    }
+
+    @Test
+    public void test_setPassword_givenInvalidId() {
+        // Arrange
+        String invalidId = UUID.randomUUID().toString();
+        String password = "passw0rd";
+        Mockito.when(mockUserDAO.findById(invalidId)).thenReturn(null);
+
+        // Act
+        User condition = sut.setPassword(invalidId, password);
+
+        // Assert
+        assertNull(condition);
+    }
+
+    @Test
+    public void test_setActive_givenValidId() {
+        // Arrange
+        String validId = UUID.randomUUID().toString();
+        User stubbedUser = new User();
+        Mockito.when(mockUserDAO.findById(validId)).thenReturn(stubbedUser);
+
+        // Act
+        User condition = sut.setActive(validId);
+
+        // Assert
+        assertTrue(condition.isActive());
+    }
+
+    @Test
+    public void test_setActive_givenInvalidId() {
+        // Arrange
+        String invalidId = UUID.randomUUID().toString();
+        Mockito.when(mockUserDAO.findById(invalidId)).thenReturn(null);
+
+        // Act
+        User condition = sut.setActive(invalidId);
+
+        // Assert
+        assertNull(condition);
+    }
+
+    @Test
+    public void test_setRole_givenValidId() {
+        // Arrange
+        String validId = UUID.randomUUID().toString();
+        String roleId = "53069ab4-c085-47d5-9d0d-aafb6c3b475a";
+        User stubbedUser = new User();
+        Mockito.when(mockUserDAO.findById(validId)).thenReturn(stubbedUser);
+
+        // Act
+        User condition = sut.setRoleId(validId, roleId);
+
+        // Assert
+        assertEquals(roleId, condition.getRoleId());
+    }
+
+    @Test
+    public void test_setRole_givenInvalidId() {
+        // Arrange
+        String invalidId = UUID.randomUUID().toString();
+        String roleId = "53069ab4-c085-47d5-9d0d-aafb6c3b475a";
+        Mockito.when(mockUserDAO.findById(invalidId)).thenReturn(null);
+
+        // Act
+        User condition = sut.setRoleId(invalidId, roleId);
+
+        // Assert
+        assertNull(condition);
     }
 }
