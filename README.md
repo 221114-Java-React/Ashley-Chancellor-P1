@@ -32,7 +32,7 @@
 * Set user roles for all employees
 * Approve and deny registration requests
 * Deactivate and reactivate user accounts
-* Reset a registered user's password (to be implemented)
+* Reset a registered user's password
 
 ##### System Use Case Diagrams
 ![System Use Case Diagrams](https://raw.githubusercontent.com/220207-java-enterprise/assignments/main/foundations-project/imgs/ERS%20Use%20Case%20Diagram.png)

@@ -29,6 +29,13 @@ public class UserService {
         return createdUser;
     }
 
+    public User setPassword(String id, String password) {
+        User user = userDAO.findById(id);
+        user.setPassword(password);
+        userDAO.update(user);
+        return user;
+    }
+
     public User setActive(String id) {
         User user = userDAO.findById(id);
 
