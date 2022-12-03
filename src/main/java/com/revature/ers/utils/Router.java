@@ -42,6 +42,7 @@ public class Router {
                 get(userHandler::getAllUsers);
                 get("/name", userHandler::getAllUsersByUsername);
                 post(userHandler::signup);
+                put("/active", userHandler::setActive);
                 put("/role", userHandler::setRole);
             });
 

@@ -37,9 +37,11 @@ public class UserDAO implements CrudDAO<User> {
     @Override
     public void update(User obj) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = conn.prepareStatement("UPDATE ers_users SET role_id = ? WHERE user_id = ?");
+            PreparedStatement ps = conn.prepareStatement("UPDATE ers_users SET role_id = ?, is_active = ? " +
+                    "WHERE user_id = ?");
             ps.setString(1, obj.getRoleId());
-            ps.setString(2, obj.getId());
+            ps.setBoolean(2, obj.isActive());
+            ps.setString(3, obj.getId());
             ps.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

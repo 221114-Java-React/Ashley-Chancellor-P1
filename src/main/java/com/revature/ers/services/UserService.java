@@ -22,11 +22,23 @@ public class UserService {
 
     public User signup(NewUserRequest req) {
         User createdUser = new User(UUID.randomUUID().toString(), req.getUsername(), req.getEmail(),
-            req.getPassword1(), req.getGivenName(), req.getSurname(), true,
+            req.getPassword1(), req.getGivenName(), req.getSurname(), false,
                 "05836bdd-83c4-4ecb-a255-c7f1f7e0bd40"); // EMPLOYEE
 
         userDAO.save(createdUser);
         return createdUser;
+    }
+
+    public User setActive(String id) {
+        User user = userDAO.findById(id);
+
+        if(user.isActive())
+            user.setActive(false);
+        else
+            user.setActive(true);
+
+        userDAO.update(user);
+        return user;
     }
 
     public String getRole(String id) {

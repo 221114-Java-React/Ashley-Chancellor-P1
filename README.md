@@ -11,16 +11,13 @@
 * API that supports mock expense reimbursement system
 * Manage process of reimbursing employees for expenses incurred while on company time
 * Conforms to RESTful architecture constraints
-* Basic validation enforced to ensure that invalid/improper data is not persisted
-* Sensitive endpoints protected from unauthenticated/unauthorized requesters using JWTs
-* Tested with at least 80% line coverage in all service and utility classes (to be implemented)
-* Errors/exceptions are handled properly, details obfuscated from user
-* Keeps detailed logs on info, error, fatal events that occur
+* Demonstration of back-end API implementation
+* Exhibition of working knowledge with Java, PostGreSql, other tech
 
 ### User story
 #### Supported features
 **Prospective users**
-* Request registration with system (currently automatically approved)
+* Request registration with system
 
 **All registered employees**
 * Log in
@@ -33,8 +30,8 @@
 
 **Administrators**
 * Set user roles for all employees
-* Approve and deny registration requests (to be implemented)
-* Deactivate user accounts (to be implemented)
+* Approve and deny registration requests
+* Deactivate and reactivate user accounts
 * Reset a registered user's password (to be implemented)
 
 ##### System Use Case Diagrams
@@ -63,7 +60,7 @@ Levels of normalization:
 #### How does my project conform to REST?
 1. **Uniform interface (UI):** All resources are uniquely identifiable through single URL (http://localhost:8080/ers)
    * Manipuating resources only possible by using underlying methods of network protocol (POST, GET, PUT) with HTTP
-2. **Client–server-based:** client & server are decoupled, or clearly delineated
+2. **Client–server-based:** client & server are decoupled
    * UI & request-gathering concerns are client's domain
    * Data access, workload management, security are server's domain
 3. **Stateless:** All client–server operations do not store session state
@@ -74,17 +71,17 @@ Levels of normalization:
 5. **Layered:** Multiple layers of services
 6. **Code on demand:** Server sends back static representations of resources in JSON form
 
-#### API maturity level
-Level 2: multiple URI (Uniform Resource Identifier)-based resources & verbs
-
 #### Richardson Maturity Model
 ![Richardson Maturity Model](https://camo.githubusercontent.com/a6f22e2c3ab71e9091d345b82e56baa4e5515cdb64345415b0a89179b6386080/68747470733a2f2f7265737466756c6170692e6e65742f77702d636f6e74656e742f75706c6f6164732f52696368617264736f6e2d4d617475726974792d4d6f64656c2e6a7067)
 
+#### API maturity level
+Level 2: multiple URI (Uniform Resource Identifier)-based resources & verbs
+
 ### Layers
 * Models – instantiated class objects; relates to DB tables (User, UserRole, Reimbursement, etc)
-* DAOs (database access objects) – return data from DB
-* Services – validate & retrieve data from DAOs
-* Handlers – handle HTTP verbs & endpoints
+* DAOs (database access objects) – return data from DB (UserDAO, UserRoleDAO, ReimbursementDAO, etc)
+* Services – validate & retrieve data from DAOs (UserService, ReimbursementService, TokenService)
+* Handlers – handle HTTP verbs & endpoints (UserHandler, ReimbursementHandler, AuthHandler)
 * Router – maps handled HTTP verbs/endpoints to Javalin app
 
 ⢀⡴⠑⡄⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                                                                      
@@ -108,7 +105,7 @@ Level 2: multiple URI (Uniform Resource Identifier)-based resources & verbs
 * IntelliJ – IDE
 * Git – version control tool
 * PostGreSQL 10 – database
-* Docker – hosts PostGreSql via virtual machine
+* Docker – hosts PostGres via virtual machine
 * DBeaver – database tool/user interface
 * Apache Maven – dependencies
 * JDBC – connect code to database

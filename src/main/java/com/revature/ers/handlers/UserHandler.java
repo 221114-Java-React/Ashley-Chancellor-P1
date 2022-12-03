@@ -72,6 +72,31 @@ public class UserHandler {
         }
     }
 
+    public void setActive(Context ctx) {
+        try {
+            String token = ctx.req.getHeader("authorization");
+
+            if (token == null || token.isEmpty())
+                throw new InvalidAuthException("You are not signed in");
+
+            Principal principal = tokenService.extractRequesterDetails(token);
+
+            if (principal == null)
+                throw new InvalidAuthException("Invalid token");
+
+            if (!principal.getRoleId().equals("53069ab4-c085-47d5-9d0d-aafb6c3b475a")) // ADMIN
+                throw new InvalidAuthException("You are not authorized to do this");
+
+            String id = ctx.req.getParameter("id");
+            User user = userService.setActive(id);
+            ctx.json(user);
+            logger.info("User active status has been changed");
+        } catch(InvalidAuthException e) {
+            ctx.status(401); // UNAUTHORIZED
+            ctx.json(e);
+        }
+    }
+
     public void setRole(Context ctx) {
         try {
             String token = ctx.req.getHeader("authorization");

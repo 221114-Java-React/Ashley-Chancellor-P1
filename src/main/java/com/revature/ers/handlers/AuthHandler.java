@@ -34,6 +34,10 @@ public class AuthHandler {
         try {
             Principal principal = userService.login(req);
 
+            // check if user account is active
+            if(!principal.isActive())
+                throw new InvalidAuthException("Your account is not active");
+
             // generate token from Principal obj
             String token = tokenService.generateToken(principal);
 
